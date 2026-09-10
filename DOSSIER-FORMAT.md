@@ -78,7 +78,11 @@ settled.
       "title_ja": "...",
       "audience_examples": ["who this layer is typically for"],
       "facts": [
-        { "text": "one verified claim, in plain prose", "source": "source id from `sources` above" }
+        {
+          "text": "one verified claim, in plain prose",
+          "source": "source id from `sources` above",
+          "source_conflict": ["optional: other source ids that state something materially different about this same claim"]
+        }
       ],
       "map_caveat": "optional: an honest note about what the associated map data does/doesn't show — do not omit this if the map would otherwise visually overclaim",
       "map_caveat_sources": ["source ids backing the caveat — required whenever map_caveat makes a factual claim about the data"],
@@ -104,6 +108,18 @@ settled.
   entry with no real source behind it yet must not be written as if verified —
   mark the layer's `status` as `incomplete` instead (same anti-fabrication
   discipline as `ferspas57`'s `NARRATIVES.md`).
+- **When sources disagree, record the disagreement — do not pick a winner
+  silently.** Put the best-sourced figure in `text` with its `source`, name the
+  dissenting sources in `source_conflict`, and say inside `text` that the conflict
+  is unresolved and what the likely explanation is. Quietly choosing one figure
+  produces a dossier that looks more certain than the evidence, which is the same
+  failure as fabrication wearing better clothes. Staff is expected to pass the
+  uncertainty on rather than flatten it.
+- **`status` may be `partial`, not only `incomplete`.** A layer whose structural
+  claims are sourced but whose present-day specifics are not is genuinely between
+  the two states, and saying so is more useful to Staff than either extreme. Spell
+  out in the same string exactly what is established, exactly what is not, and what
+  would settle the remainder.
 - **A caveat is a claim, so it carries sources too.** A `map_caveat` that says
   what a dataset does or does not contain is asserting a fact about that dataset,
   and the anti-fabrication rule applies to it exactly as it does to `facts[]`.
