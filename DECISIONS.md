@@ -4,6 +4,26 @@ ADR-lite log for this project. English. Append new decisions at the top, oldest 
 
 ---
 
+### D9 — The livelihood layer gets a located outcrop and its own verified map — deliberately not a thematic one
+**Date**: 2026-09-11
+**What**: Closed two of the tasks `HANDOVER.md` left open after D8 (the geosite's coordinates, and the livelihood layer's missing map), and in doing so gave that layer the first Cartographer link this repo built and verified itself rather than inheriting from a peer session.
+
+**The outcrop is located.** 十勝岳ジオパーク's geosite page gives it a formal name — 「草分の大正泥流堆積物」 — an address (北海道空知郡上富良野町北町), an access route (JR上富良野駅から徒歩約18分／1.4km、道道291号線脇の畑の畦) and an observation point at 43°28'32.00"N / 142°27'54.00"E, decimal 43.475556 / 142.465000. Read out of the page's own HTML here rather than through a summarizer, and the DMS→decimal conversion checked by hand.
+
+**The map is aerial imagery, and choosing that over the thematic map was the actual decision.** `vlcd_tokachi` does have data at the outcrop — verified here by fetching tiles 12/3668/1497, 13/7337/2995 and 14/14675/5990 and analysing their pixels (0.00% transparent at every zoom). It would have been the obvious layer to reuse. It is the wrong one: the colours there are a different landform-class mix from the crater area, and per D7 the 1926 category is not in the product at all, so **every colour a reader sees at that outcrop is something other than the mudflow.** Handing over a thematic map whose colours cannot mean what the reader will assume is the exact failure D7 documented and round 2's H2 punished. So this layer uses `seamlessphoto512` from the stars-optgeo catalog: imagery shows the fields beside the road, which is what someone trying to find the outcrop actually needs, and imagery makes no thematic claim to misread.
+
+**Verified in a real browser, not asserted.** Opened the constructed link and confirmed: the layer resolves, the custom label 「空中写真」 renders with its checkbox checked, the camera lands on 上富良野町北町 with the 「北町」 place label visible, the goal string auto-composes, and the attribution reads 国土地理院 シームレス空中写真 (GSI seamlessphoto) CC BY 4.0 | Mapterhorn. No fallback to the paste form, no JS exceptions. Recorded honestly alongside it: **imagery coverage does not fill the frame** — the left and right edges fall back to the vector basemap. First time this repo has produced a `*_status` from its own direct observation.
+
+**The new caveat is about permission and viewing angle, not just data.** Three points: the imagery choice and why the thematic map was rejected; that the outcrop sits on the edge of a working field next to private land, so being visible on a map is not permission to walk onto it and the asker should be pointed at the geopark council or the town; and that the three-layer section is a ground-level thing invisible from above — the map shows where the layer's central fact is, not the fact itself.
+
+**Damage figures now have a real source, and they reconcile.** The geosite page carries the municipal breakdown: 上富良野町 137 dead/missing (18 missing), 美瑛町 7 (3 missing) — **totalling exactly the 144 the GSI document gives**, which is a genuine cross-source check rather than a restatement. Also 罹災者 1,401 of an estimated population of 10,026 (~14% of the town), 罹災戸数 315 of 1,507 (~21%), and damage of about ¥1.95M against a 1925 municipal budget of about ¥110,000 — roughly eighteen times the town's annual finances. These were rejected on 2026-09-11 when they appeared only in a search snippet; they are adopted now because the geopark council's own page carries them, still marked as the weaker source class established in D8.
+
+**Also recorded**: spiccato's canonical host has moved to `dwg7.unopengis.org`, with `dwg7.github.io/spiccato/` redirecting there (observed here during verification). The hazard layer's existing link is deliberately **left on the old host** — a VERIFIED attestation belongs to the exact string somebody actually opened, and silently rewriting it would quietly transfer that credibility to a URL nobody checked. Noted in the dossier for whoever next re-verifies it.
+
+**Status**: `livelihood` stays `partial`. Present-day land use over the affected lowland is still unsourced — 国土数値情報 土地利用細分メッシュ (L03-b) remains the candidate — and the limit set in D8 stands: 1926 was 水田 per JMA, so the claim is continuity of agricultural use, never of crop.
+
+---
+
 ### D8 — Round-2 testing: the prompt demanded checks it gave Staff no way to perform, and Staff filled the gaps by inferring
 **Date**: 2026-09-11
 **What**: Ran round 2 of `STAFF-PROMPT.md` testing with the conflict of interest that limited round 1 designed out. Two separate sessions were used: one was given only the fenced system prompt, `DOSSIER-FORMAT.md` and the dossier — no repo history, no knowledge of the prompt's design or of round 1 — and told to answer five personas in character; a second, also uninformed, then reviewed those answers adversarially. Artefacts: `tests/round2-transcript.md`, `tests/round2-review.md`. Twenty findings, six High. Prompt is now Draft v0.3, tag `kataribe-staff-2026-09-11c`.

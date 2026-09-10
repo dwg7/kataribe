@@ -125,7 +125,8 @@
       },
       "cartographer_links": {
         "spiccato": "https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=vlcd_tokachi|十勝岳・火山土地条件図&lat=43.435&lng=142.665&zoom=13&name=十勝岳大正泥流(火口周辺堆積地)",
-        "spiccato_status": "VERIFIED 2026-09-05 by the spiccato session (faceless-cartographer-ae, formerly -82): vlcd_tokachi resolves and renders with the given label, camera matches lat/lng/zoom exactly, no console errors, raw Japanese in name= reads fine unencoded. Safe to hand to a real asker."
+        "spiccato_status": "VERIFIED 2026-09-05 by the spiccato session (faceless-cartographer-ae, formerly -82): vlcd_tokachi resolves and renders with the given label, camera matches lat/lng/zoom exactly, no console errors, raw Japanese in name= reads fine unencoded. Safe to hand to a real asker.",
+        "host_note": "2026-09-11にkataribeセッションが確認: spiccatoの正規ホストは `dwg7.unopengis.org` に移っており、`dwg7.github.io/spiccato/` はそちらへリダイレクトされる。上記のVERIFIED済みリンクは github.io のまま残してある——検証の証言は実際に確認された文字列に紐づくため、無断で書き換えない。次に誰かがこのリンクを実機確認する際に、`https://dwg7.unopengis.org/spiccato/` へ揃えること。"
       },
       "map_caveat_sources": [
         "kitavolca-vlcm-2026-09-05",
@@ -170,6 +171,10 @@
           "source": "jma-asahikawa-lahar100"
         },
         {
+          "text": "この露頭の正式名は「草分の大正泥流堆積物」。所在地は北海道空知郡上富良野町北町で、JR富良野線上富良野駅から徒歩約18分(1.4km)、道道291号線脇の畑の畦にある。ジオパーク解説に記載された観察地点は 43°28'32.00\"N / 142°27'54.00\"E(十進で 43.475556 / 142.465000)。",
+          "source": "tokachidake-geopark-239"
+        },
+        {
           "text": "上富良野町内のジオサイト「大正泥流の地層」の露頭では、3つの層が重なって観察できる。下から、開拓以来約30年分(1897〜1926年)の耕作による黒土、1926年の大正泥流層(砂利を含む)、そして災害後に農地を復興するため他地域から運び入れられた客土。同じ土地の農業が、泥流の層を挟んで下と上に分かれている。",
           "source": "tokachidake-geopark-239"
         },
@@ -180,10 +185,41 @@
         {
           "text": "上富良野町開拓記念館は、泥流からの復興に尽力した当時の村長・吉田貞次郎の住宅を解体復元したものである。この建物自体が大正泥流の被害を受けながら残存した。",
           "source": "kamifurano-town-kaitaku-kinenkan"
+        },
+        {
+          "text": "被害の内訳: 死者・行方不明者は上富良野町137人(うち行方不明18人)、美瑛町7人(うち行方不明3人)。合計144人は、国土地理院解説書が記す総数と一致する。",
+          "source": "tokachidake-geopark-239"
+        },
+        {
+          "text": "罹災の規模: 上富良野町の罹災者1,401名は当時の推計人口10,026人の約14%、罹災戸数315戸は推計1,507戸の約21%にあたる。美瑛町は罹災者600人(人口12,280人)、罹災戸数86戸(2,138戸)。",
+          "source": "tokachidake-geopark-239"
+        },
+        {
+          "text": "被害総額は上富良野町 約195万円。1925年の同町の財政規模は約11万円で、被害額はその約18倍にあたる。生業の基盤が、自治体の年間財政規模を桁違いに超える規模で失われた。",
+          "source": "tokachidake-geopark-239"
         }
       ],
-      "status": "partial — 復興の経緯と、農地→泥流→農地という重なりについては一次資料で裏付けが取れた(2026-09-11)。未確定なのは現在の土地利用の具体的内容(作物構成・農地面積等)で、これは一次資料未取得のため書いていない。国土数値情報の土地利用細分メッシュ(L03-b)が第一候補。【重要な限定】1926年当時は気象庁の記述によれば「水田」であり、現在の作物構成との連続性は主張できない。主張できるのは土地の農業利用の連続性であって、作物の連続性ではない。またkitavolca-60への照会(2026-09-11)により、kitavolca側のVLCMデータではこの層は埋まらないことが確定している。",
-      "map_caveat": "この層に対応する地図データは特定できていない。1926年の到達域そのものが国土地理院の数値・ラスタ製品に存在しない(hazard層のmap_caveat参照)ため、「泥流に埋まり、客土で復興した農地」の範囲を地図で示す手段は現時点では無い。ジオサイト露頭の正確な座標も未取得。"
+      "status": "partial — 復興の経緯、被害規模、農地→泥流→農地という重なりについては一次資料で裏付け済み(2026-09-11)。未確定なのは現在の土地利用の具体的内容(作物構成・農地面積等)で、一次資料未取得のため書いていない。国土数値情報の土地利用細分メッシュ(L03-b)が第一候補。【重要な限定】1926年当時は気象庁の記述によれば「水田」であり、現在の作物構成との連続性は主張できない。主張できるのは土地の農業利用の連続性であって、作物の連続性ではない。またkitavolca-60への照会(2026-09-11)により、kitavolca側のVLCMデータではこの層は埋まらないことが確定している。",
+      "map_caveat": "この地図が示すのは**露頭の場所だけ**であり、泥流の到達範囲でも、埋まった農地の範囲でもない。\n\n(1) 意図的に空中写真を選んでいる: この地点には火山土地条件図(`vlcd_tokachi`)のデータも存在する(2026-09-11にkataribeセッションがタイル13/7337/2995等を取得し、透過0.00%で描画されることを確認済み)。しかし火口周辺とは別の色構成であり、そこに見える色は1926年の泥流ではない別の地形分類である。そもそも「1926年泥流区域」はGSIの数値データに存在しない(hazard層のmap_caveat参照)。色を泥流と誤読させる危険があるため、この層では主題図を使わず空中写真を用いる。\n\n(2) 露頭は畑の畦にある: 私有地に隣接する現役の農地である。見学の可否・立ち入りの作法については、十勝岳ジオパーク推進協議会または上富良野町に確認するよう相手に伝えること。地図上に見えることは、行ってよいことを意味しない。\n\n(3) 3層構造は地上で見るものであって、上空からは見えない: 客土/泥流層/黒土の重なりは露頭の断面であり、空中写真には写らない。地図は場所を示すだけで、この層の中心的な事実そのものを示してはいない。",
+      "map_projection_hint": {
+        "required_layers": [
+          "seamlessphoto512"
+        ],
+        "center": [
+          142.465,
+          43.475556
+        ],
+        "zoom": 16,
+        "note": "ジオサイト「草分の大正泥流堆積物」の観察地点を中心にした空中写真表示。カタログは stars-optgeo(catalog=https://stars.optgeo.org/catalog&type=martin)。火山土地条件図(vlcd_tokachi)はこの地点にもデータが存在するが、意図的に使っていない — map_caveat参照。"
+      },
+      "cartographer_links": {
+        "spiccato": "https://dwg7.unopengis.org/spiccato/#q=catalog=https://stars.optgeo.org/catalog&type=martin&req=seamlessphoto512|空中写真&lat=43.4756&lng=142.465&zoom=16&name=草分の大正泥流堆積物",
+        "spiccato_status": "VERIFIED 2026-09-11 by the kataribe session, opened in a real browser: seamlessphoto512 resolves, the custom label 空中写真 renders in the layer panel with its checkbox checked, camera lands on 上富良野町北町(地名ラベル「北町」が表示される)、goalは「GSI seamlessphoto 512px (z1-z17) を表示。」と自動合成され、出典表示は「国土地理院 シームレス空中写真 (GSI seamlessphoto) CC BY 4.0 | Mapterhorn」。貼り付けフォームへのフォールバックもJS例外も無し。**確認できなかった点**: 空中写真の被覆は画面全体には及ばず、フレーム左右の端はベクタ背景地図のみになる。"
+      },
+      "map_caveat_sources": [
+        "tokachidake-geopark-239",
+        "gsi-vlcd-raster-notes-2026-09-11"
+      ]
     }
   ]
 }
