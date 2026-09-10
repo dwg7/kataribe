@@ -1,0 +1,67 @@
+{
+  "dossier_version": "kataribe-dossier/v1",
+  "event": {
+    "name_ja": "十勝岳大正泥流",
+    "name_en": "Taisho-era Tokachidake mudflow (1926-05-24)",
+    "date": "1926-05-24",
+    "place_ja": "十勝岳(北海道、標高2,077m)、上富良野町・美瑛町周辺の低地"
+  },
+  "sources": [
+    {
+      "id": "gsi-vlcm-tokachi-1990",
+      "citation": "国土地理院 1:50,000 火山土地条件図「十勝岳」解説書(平成2年/1990発行、平成元年/1989測量) https://www.gsi.go.jp/common/000109832.pdf",
+      "usage_basis": "GSIの政府標準利用規約が、原文の「許可なく複製を禁ずる」という表示を部分的に上書きする。加えてhfu自身が既存の利用承認(kitavolcaの測量法許可と同種)を保有。ここでの利用は原資料の複製ではなく、根拠事実の引用・翻案として扱う。",
+      "gathered": "2026-09-05"
+    },
+    {
+      "id": "kitavolca-vlcm-2026-09-05",
+      "citation": "kitavolca (dwg7/kitavolca) セッション kitavolca-60 による、src/tokachi_vlcm.zip および dst/vlcm.pmtiles の直接検証(2026-09-05、クロスセッション連携)",
+      "usage_basis": "cross-session verification of kitavolca's own generated data; see kataribe HANDOVER.md for the full exchange",
+      "gathered": "2026-09-05"
+    }
+  ],
+  "layers": [
+    {
+      "layer_id": "hazard",
+      "title_ja": "1926年5月24日、十勝岳大正泥流",
+      "audience_examples": ["市町村防災担当者", "学校教員", "観光・温泉事業者"],
+      "facts": [
+        { "text": "十勝岳(標高2,077m)は大雪–十勝火山群の一部(北海道中央北部、北東-南西に約80km続く標高1,500〜2,000m級の稜線)に属する活火山。主な活動は山頂北西斜面直下に集中している。", "source": "gsi-vlcm-tokachi-1990" },
+        { "text": "1926年5月24日、大爆発により中央火口丘の北西半分が破壊された。噴火の熱で残雪が融け、直接の火砕流ではなく融雪型の二次泥流として発生した。", "source": "gsi-vlcm-tokachi-1990" },
+        { "text": "泥流は美瑛川と富良野川の2系統に分かれて流下した。", "source": "gsi-vlcm-tokachi-1990" },
+        { "text": "爆発からわずか25〜26分で上富良野町周辺の低地に到達した——ほとんど猶予のない速さだった。", "source": "gsi-vlcm-tokachi-1990" },
+        { "text": "望岳台(南側、標高約1,100m)付近では堆積物が1m以上の厚さに達した(同解説書内の引用元: 石川ほか, 1971)。", "source": "gsi-vlcm-tokachi-1990" },
+        { "text": "1926年5月24日の死者・行方不明者は144名。別に同年5月8日の爆発でも2名が行方不明になっている。その後も小規模な噴火が続いた。", "source": "gsi-vlcm-tokachi-1990" },
+        { "text": "同年の前兆: 2月に砂礫の噴出、4月に降灰と群発地震、5月13〜14日に小規模な先行泥流があった——前触れのない突発的な災害ではなく、約3か月の前兆期間があった。", "source": "gsi-vlcm-tokachi-1990" },
+        { "text": "国土地理院自身がこの地図の設計において、1926年泥流の到達域を10年確率最大積雪深データと重ね合わせており、将来の融雪型泥流リスクを見積もる基準事例として扱っている。", "source": "gsi-vlcm-tokachi-1990" }
+      ],
+      "map_caveat": "kitavolcaの実データ検証(2026-09-05)により、VLCMベクトルタイル(stars.optgeo.org/vlcm、source-layer `natural`、`name == \"1926年泥流堆積地\"`)に実在する1926年泥流ポリゴンは、火口直近(おおよそ経度142.655〜142.675、緯度43.428〜43.442、重心[142.665, 43.435])のみをカバーしており、上富良野方面への実際の到達域は含まれていないことが判明した。地図でこの層を見せる際は、この限定範囲を火口周辺の地形として示すにとどめること——25〜26分で上富良野まで到達したという事実は、このドッシェの文章(facts)で伝えるものであり、ポリゴンがその到達域全体を表しているという誤解を与えてはならない。汎用カテゴリ「土石流・泥流堆積地」は十勝岳データには存在せず(別火山のデータ)、`docs/style.json`上の「1926年泥流区域」というスタイル項目も対応する実データが無いorphanエントリなので、いずれも使用しないこと。",
+      "map_projection_hint": {
+        "required_layers": ["vlcd_tokachi"],
+        "center": [142.665, 43.435],
+        "zoom": 13,
+        "note": "火口周辺の堆積地を中心とした初期表示の目安(kitavolca-60提供、2026-09-05)。上富良野側の広域文脈を見せたい場合は、VLCMデータの範囲外になるため、別途zoom 10〜11・中心を西/南寄りにシフトしたベースマップ的表示が必要(この場合ポリゴンは映らない)。いずれのbboxも未検証の目安であり、実際にCartographerで表示確認してから使うこと。"
+      },
+      "cartographer_links": {
+        "spiccato": "https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=vlcd_tokachi|十勝岳・火山土地条件図&lat=43.435&lng=142.665&zoom=13&name=十勝岳大正泥流(火口周辺堆積地)",
+        "spiccato_status": "VERIFIED 2026-09-05 by the spiccato session (faceless-cartographer-ae, formerly -82): vlcd_tokachi resolves and renders with the given label, camera matches lat/lng/zoom exactly, no console errors, raw Japanese in name= reads fine unencoded. Safe to hand to a real asker."
+      }
+    },
+    {
+      "layer_id": "place-identity",
+      "title_ja": "土地の名前に刻まれた記憶",
+      "audience_examples": ["学校教員", "観光ガイド", "地域住民"],
+      "facts": [
+        { "text": "1926年に生じた火口は、現在も「大正火口」と呼ばれている——出来事そのものが地形の名前として残っている。", "source": "gsi-vlcm-tokachi-1990" },
+        { "text": "1926年の堆積物は、1988年(63年後)の航空写真でもなお視覚的に識別可能で、同時期に生じた別の小規模泥流(約600m規模、1988年)と区別されていた。", "source": "gsi-vlcm-tokachi-1990" }
+      ]
+    },
+    {
+      "layer_id": "livelihood",
+      "title_ja": "同じ土地の今",
+      "audience_examples": ["観光・農業関係者", "地域住民", "学校教員"],
+      "facts": [],
+      "status": "incomplete — 上富良野・富良野盆地の現在の農業・土地利用の具体的な内容(作物種、記念事業の有無、2026年が100周年にあたることへの言及の有無など)は、手元の一次資料(GSI解説書・kitavolcaのVLCM実データ)からは直接確認できていない。「1926年の堆積地が現在は農地になっている」という主張は、design proposal時点(2026-09-05)の説明的な前提に過ぎず、まだ一次データで裏付けが取れていないため、ここには書かない(kitavolca-60に確認依頼中)。narrative.json生成時に、Staffが実際の一次情報(現地の統計・kitavolca側の土地利用分類など)を調べて埋めることを想定する — DOSSIER-FORMAT.md参照。"
+    }
+  ]
+}
