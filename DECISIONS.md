@@ -4,6 +4,43 @@ ADR-lite log for this project. English. Append new decisions at the top, oldest 
 
 ---
 
+### D7 — The 1926 mudflow's actual reach is absent from GSI's map data by design, not by accident — caveat strengthened, earlier "orphan entry" reading corrected
+**Date**: 2026-09-11
+**What**: Asked `kitavolca-60` to settle the inconsistency D5 left open (the hazard layer's `map_caveat` described kitavolca's *vector* VLCM tiles while the handed-over link is the *raster* `vlcd_tokachi`). Their answer resolved it and, in doing so, overturned a reading this repo had been carrying since 2026-09-05.
+
+Verified independently by this session before adoption, per `CLAUDE.md`'s peer-verification rule:
+- **Same origin, two channels.** GSI's own 地理院タイル一覧 entry for the 火山土地条件図 raster gives the product as 「火山土地条件図　数値データ（火山地形分類）」, the same product name the Shapefile's bundled GSI notes carry (平成元年調査). Raster and vector are two deliveries of one 1989 survey, so the vector-derived caveat was never pointed at the wrong data.
+- **The exclusion is official and deliberate.** `kitavolca-60` read the GSI notes bundled in `src/tokachi_vlcm.zip` (『シェープファイルについて.txt』), which state that 「他の資料を引用している項目（活断層・リニアメント、**1926年泥流区域**）」 are not included in the digital data. This session did not open that zip, so the quoted sentence rests on kitavolca's reading — but GSI's own public raster note, fetched directly here, corroborates the direction: 「人工地形分類データ及び**一部の自然地形分類データは表示されない**点にご留意ください」.
+- **The raster is wall-to-wall colour.** Fetched tile 13/7342/2996 (computed independently for centre `[142.665, 43.435]`; the coordinates matched kitavolca's) and analysed the pixels here: **0.00% fully transparent**, 3,000+ distinct colours, top bands `#bf8b7e` 31.2%, `#7bb54c` 22.5%, `#ff9452` 15.1%. Matches kitavolca's reported figures closely enough to count as corroboration from two directions.
+
+**The correction to the record**: `HANDOVER.md` had recorded 「1926年泥流区域」 as "an orphaned style entry with no matching real feature — a known inconsistency in kitavolca's catalog, not something to build on." That was wrong. It is a legitimate legend item of the printed 1:50,000 map that GSI deliberately declined to digitise, because it derives from external sources rather than GSI's own survey. Same observable symptom, opposite meaning.
+
+**Why this matters more than a footnote**: the constraint is stronger than D5 assumed. It is not that the map *happens* not to reach 上富良野 — it is that **no GSI product, vector or raster, contains a category showing the disaster's reach at all**. The one layer that might have shown it was excluded from digitisation on purpose. A hazard Staff can therefore never show this event's extent on a map, and must stop expecting to.
+
+**Consequence**: `map_caveat` rewritten from one paragraph into four numbered points — (1) the reach is absent from the source product by design; (2) the only real polygon is the near-crater deposit; (3) the raster fills the frame with landform colours of which the 1926 deposit is one, so an unlabelled reader will mistake colour for mudflow extent — the most likely real-world misreading and the reason the caveat needed strengthening rather than retargeting; (4) which style entries must not be used as evidence. Two new `sources[]` entries added, and a new `map_caveat_sources` field ties the caveat to them — because a caveat asserting what a dataset contains is a factual claim and falls under the same anti-fabrication rule as `facts[]`. `DOSSIER-FORMAT.md` updated to define the field.
+
+---
+
+### D6 — Round-1 live test of `STAFF-PROMPT.md`: six defects found, prompt revised to v0.2
+**Date**: 2026-09-11
+**What**: Ran the first live test of `STAFF-PROMPT.md` v0.1 against four personas drawn from the v1 audience — a 上富良野町 disaster-prevention officer, a schoolteacher, an onsen operator, and a Furano-area farmer. Full record in `tests/staff-prompt-round1.md`. Six defects found, all fixed the same day; prompt is now Draft v0.2, version tag `kataribe-staff-2026-09-11b`.
+
+**Method, and why it was chosen**: the round was run by the session that wrote the prompt, which makes a compliance test ("does Staff follow the rules?") worthless — it would pass by construction. So the test asked the opposite question: **follow every rule literally and find where doing so produces a bad, impossible, or unsafe output.** Every defect below came from that framing; none would have surfaced from checking obedience. Round 2 must still be run by a reader that did not write the prompt, and must include a non-Japanese-speaking asker — Rule 4's live-translation path is entirely untested, since the dossier is Japanese-only and all four personas spoke Japanese.
+
+The two serious findings:
+
+- **F1 — the Response Format assumed every layer has a map; only one of three does.** `place-identity` and `livelihood` carry no `map_projection_hint` and no `cartographer_links`, but step 4 mandated a link unconditionally with no alternative path. A literal reader either silently breaks the mandated format or — the trap the prompt actively set — builds a link from the only material available, the `hazard` layer's. That second path also defeats Rule 2 silently: `map_caveat` belongs to the layer that owns the map, so a borrowed link arrives with its warning detached, handing someone a mudflow-deposit map with no explanation of what it does not show. Fixed by making step 4 conditional, adding an explicit no-map path ("say so in one sentence and move on"), and adding a Rule 1 prohibition on borrowing another layer's map.
+
+- **F2 — Rule 3's live-hazard check fired only for the `hazard` layer.** The onsen-operator persona exposed this: their question is a history question, `place-identity` is the *correct* selection, and Rule 3 then never fires — so Staff tells someone running a business on a volcano currently at 噴火警戒レベル2 a warm story about 1926 and never mentions the active warning, which that operator then repeats to guests. The layer selection was right and the rule's scoping was wrong. Whether a hazard's generating process is still running is a property of the **event**, not of which layer the asker happened to need. Fixed by rescoping Rule 3 to every layer of such an event, with an instruction to keep it to one or two marked sentences at the end when the selected layer is not `hazard`, so it does not hijack the answer actually asked for. Worth noting that the prompt behaved worst exactly where its own layer-selection logic worked best.
+
+The four smaller ones: **F3** — "Choose ONE layer" read as a wall around facts rather than a rule about framing, so Staff would withhold the cross-layer fact that makes an answer honest (the farmer needs the `hazard` layer's deposit extent to avoid inferring "unconfirmed, so probably yes"); now explicitly permitted, with attribution. **F4** — step 5 told Staff to advertise the other layers without checking they had any facts, dangling a `status: incomplete` layer as if asking for it would produce an account; now requires naming a layer's state or leaving it out. **F5** — Rule 3 asked for a date while the Version tag section forbade computing the current date; now says to take the date from the lookup itself. **F6** — `cartographer_links`/`*_status` exist in the real dossier and the prompt instructs Staff to prefer them, but they were absent from `DOSSIER-FORMAT.md`'s schema; fixed on the schema side, along with a rule that most layers legitimately have no map.
+
+**Recorded, not fixed**: `audience_examples` is a far weaker selection signal than v0.1 implied — 学校教員 appears in all three layers of the only dossier that exists. The prompt already says stated purpose beats the examples, and that is what produced the right answer for two of the four personas. Watch it; do not change it yet.
+
+**Status**: v0.2 remains unvalidated in the sense that matters. What round 1 established is that the prompt survives contact with four real question shapes after six repairs — not that it works. `ferspas57`'s equivalent needed six revisions and several testing rounds before it stopped producing real bugs. The layer-recognition pattern is still not ready to propose to `staccato-ecosystem`.
+
+---
+
 ### D5 — Staff prompt v0.1 drafted, with a new mandatory live-status rule for still-active hazards
 **Date**: 2026-09-11
 **What**: Wrote `STAFF-PROMPT.md` (Draft v0.1) — the last major unbuilt piece named in `HANDOVER.md`'s task list. It follows `staccato-spec`'s `staff-system-prompt.md` template and the "Staff's implementation IS this prompt text" model already running in `dwg7/ferspas57` and `dwg7/chukei`: a fenced system-prompt block to paste into a general-purpose chat agent, alongside `DOSSIER-FORMAT.md` and the dossier JSON.

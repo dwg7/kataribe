@@ -81,11 +81,16 @@ settled.
         { "text": "one verified claim, in plain prose", "source": "source id from `sources` above" }
       ],
       "map_caveat": "optional: an honest note about what the associated map data does/doesn't show — do not omit this if the map would otherwise visually overclaim",
+      "map_caveat_sources": ["source ids backing the caveat — required whenever map_caveat makes a factual claim about the data"],
       "map_projection_hint": {
         "required_layers": ["source_id, from whichever Cartographer catalog is targeted"],
         "center": [lng, lat],
         "zoom": 0,
         "note": "optional guidance for whoever builds the actual link"
+      },
+      "cartographer_links": {
+        "<cartographer name>": "a complete, ready-to-hand-over URL",
+        "<cartographer name>_status": "VERIFIED <date> by <who>, and what they actually checked — or an honest note that it has not been opened yet"
       },
       "status": "optional: 'incomplete' + what's missing, when a layer isn't yet fact-complete enough to hand to a real asker"
     }
@@ -99,6 +104,12 @@ settled.
   entry with no real source behind it yet must not be written as if verified —
   mark the layer's `status` as `incomplete` instead (same anti-fabrication
   discipline as `ferspas57`'s `NARRATIVES.md`).
+- **A caveat is a claim, so it carries sources too.** A `map_caveat` that says
+  what a dataset does or does not contain is asserting a fact about that dataset,
+  and the anti-fabrication rule applies to it exactly as it does to `facts[]`.
+  List the backing `sources[]` ids in `map_caveat_sources`. A caveat that merely
+  restates the layer's own facts needs no separate sources; one that reports what
+  someone found by opening the data does.
 - **`map_caveat` is not optional when it matters.** If the best available map
   layer for a dossier layer covers less ground than the facts describe (as
   happened with the first dossier's hazard layer — see `HANDOVER.md`), say so
@@ -110,6 +121,20 @@ settled.
   inventing one (this is exactly what happened when `spiccato`'s session
   checked for a mudflow-specific layer and found only the general
   `vlcd_tokachi` VLCM layer — see `HANDOVER.md`).
+- **Most layers have no map, and that is normal.** `map_projection_hint` and
+  `cartographer_links` are both optional, and in the first dossier only one layer
+  of three carries them. A layer without a map is complete without one — it must
+  never be given a map borrowed from a sibling layer, because `map_caveat`
+  belongs to the layer that owns the map, and a borrowed link arrives with its
+  warning detached. `STAFF-PROMPT.md` forbids this on the Staff side; the schema
+  simply declines to require what a layer does not have.
+- **`cartographer_links` holds a link a human or a peer session actually
+  opened.** It is a cache of verification work, not a convenience: the paired
+  `*_status` field records who checked it, when, and what they saw. Staff is
+  instructed to prefer a VERIFIED link verbatim over rebuilding an equivalent
+  one from `map_projection_hint`, because the rebuild has not been opened by
+  anybody. If a link has not been checked, say so in its `*_status` rather than
+  leaving the field looking verified.
 - **`status: incomplete` is a valid, expected state**, not a failure — a layer
   should carry it rather than be filled with plausible-sounding but ungathered
   specifics.
