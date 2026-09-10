@@ -20,12 +20,15 @@ The repository is intentionally **general-purpose** — not scoped to volcanoes,
 - [`UNopenGIS/staccato-spec`](https://github.com/UNopenGIS/staccato-spec) — the normative Staff/Cartographer/Library architecture (ADR 0001's Faceless Cartographer, human-mediated handoff, is part of why this design treats verification as cheap-by-construction — see `CLAUDE.md`).
 - [`dwg7/kitavolca`](https://github.com/dwg7/kitavolca) — the Library this Staff's map links resolve against (VBM/VLCM Hokkaido volcano data, served via `stars.optgeo.org`).
 - [`dwg7/kaga0`](https://github.com/dwg7/kaga0) — an air-gapped Cartographer appliance; a plausible future deployment target, not the first one.
-- [`dwg7/ferspas57`](https://github.com/dwg7/ferspas57) — the Cartographer this repo expects to reuse or fork: its `docs/narrative.js`/`NARRATIVE-FORMAT.md` (a pre-authored, versioned narrative library that Staff selects from and language-adapts, rather than generates) is architecturally the same shape kataribe needs, just pointed at different data. See `CLAUDE.md` for what's expected to be shared vs. adapted.
+- [`dwg7/spiccato`](https://github.com/dwg7/spiccato) — the Cartographer this repo's dossier links actually resolve against, chosen 2026-09-05 (`DECISIONS.md` D3): its single-Map-Intent-per-link `#q=` model matches kataribe's "one question → one selected layer → one resolved render" shape exactly, and it already carries kitavolca's volcano data in its live catalog.
+- [`dwg7/ferspas57`](https://github.com/dwg7/ferspas57) — a sibling Staff built on the same "select from pre-authored material, adapt language live, never generate content" principle, and the source of the multi-step narrative mechanism kataribe deliberately did *not* need for its first dossier. Reserved for a future dossier layer that genuinely needs an internal step-by-step build-up. See `DECISIONS.md` D3.
 - [`dwg7/chukei`](https://github.com/dwg7/chukei) — the general-purpose GSI Hokkaido Staff this project is a sibling to, not an extension of. Kataribe does not embed chukei's full capability.
 
 ## Status
 
-Just founded (2026-09-05). Scaffold only — no dossier, no prompt, no Cartographer adaptation yet. See [`HANDOVER.md`](HANDOVER.md) for the immediate next task and the primary-source material already gathered for the first dossier.
+Early, but no longer scaffold-only. As of 2026-09-11 the repository holds a first dossier ([`dossiers/tokachidake-taisho-mudflow-1926.json`](dossiers/tokachidake-taisho-mudflow-1926.json) — hazard and place-identity layers fact-complete, livelihood layer deliberately marked incomplete rather than padded), the dossier schema ([`DOSSIER-FORMAT.md`](DOSSIER-FORMAT.md)), and a first draft of the Staff prompt itself ([`STAFF-PROMPT.md`](STAFF-PROMPT.md)).
+
+The Staff prompt is written but **not yet validated against real questions** — that is the next task. See [`HANDOVER.md`](HANDOVER.md) for current state and [`DECISIONS.md`](DECISIONS.md) for the reasoning behind each design call.
 
 ## License
 

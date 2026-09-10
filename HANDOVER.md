@@ -2,6 +2,29 @@
 
 Read this first in any new session on this repo.
 
+## What's true as of 2026-09-11 (read this before the older sections below)
+
+- **The repo is now under version control and pushed.** Until 2026-09-11 every file here was untracked and `dwg7/kataribe` on GitHub was empty — roughly 60 KB of work, including cross-session verification results that would have been expensive to reproduce, existed only on this disk. Initial commit `c41c1f4` now holds all of it on `origin/main`. Found independently by this session (`git log` → "does not have any commits yet"; `git ls-remote origin` → empty) and, the same morning, by `staccato-ecosystem-85` during an ecosystem-wide review; hfu approved the public push. **Commit at each work boundary from now on** — this repo has no CI and no other safety net.
+
+- **`STAFF-PROMPT.md` exists (Draft v0.1).** The last major unbuilt piece from the old task list below. See `DECISIONS.md` D5 for its structure and reasoning. It is written, not validated — `ferspas57`'s equivalent needed six revisions and several rounds of live testing against real personas before it stopped producing real bugs, and there is no reason kataribe's will be different.
+
+- **十勝岳 is under an active volcanic warning right now, and that changes how this dossier must be told.** Verified directly against 気象庁 (not taken on a peer's say-so, per `CLAUDE.md`'s rule): 噴火警戒レベル２（火口周辺規制）issued 2026-06-18 and unchanged since; ごく小規模な噴火 on 2026-07-22, 2026-08-05 and 2026-08-06; deep inflation since March 2026, increased SO2 since April; warning radius ~1.5 km from 62-2火口. Source: 「十勝岳の火山活動解説資料（令和８年８月）」 https://www.data.jma.go.jp/vois/data/report/monthly_v-act_doc/sapporo/26m08/108_26m08.pdf (next edition due 2026-10-08). **Crucially, the currently-restive crater is 62-2火口/振子沢噴気孔群 — not 大正火口**, the 1926 crater this dossier is named for, which the same report puts at 噴気 200 m or less. Conflating the two would be a plausible and materially misleading error. None of this went into the dossier (it is changeable present-day fact — `DOSSIER-FORMAT.md`); it became `STAFF-PROMPT.md`'s Rule 3 instead.
+
+- **`vlcd_tokachi` re-confirmed present in the live catalog** (`https://hfu.github.io/layers-martin/catalog.json`, `content_type: image/png`, path 「土地の成り立ち・土地利用 / 火山土地条件図 / 火山土地条件図　数値データ（火山地形分類）」). Checked directly by this session, so the dossier's VERIFIED marking now has corroboration from a second direction.
+
+- **Open item — a real inconsistency in the first dossier, deliberately left unfixed.** The hazard layer's `map_caveat` describes kitavolca's **vector** VLCM tiles (`stars.optgeo.org/vlcm`, source-layer `natural`), but `cartographer_links.spiccato` hands over the **raster** `vlcd_tokachi` from `layers-martin`. The caveat's conclusion (don't let the map imply the flow reached 上富良野) very probably still holds, since both appear to render the same GSI 火山地形分類 digital data — but "very probably" is exactly what this repo's own rules forbid asserting. **Next session: ask `kitavolca` whether `vlcd_tokachi`'s raster and their `vlcm.pmtiles` derive from the same source data, and what the raster actually shows at zoom 13** (it renders every landform class, not just the 1926 polygon, so a reader may see a lot of colour and mistake it for mudflow extent — the caveat may need to be *stronger*, not just retargeted).
+
+## Immediate next tasks (as of 2026-09-11)
+
+1. **Live-test `STAFF-PROMPT.md` against real personas** — the 上富良野町 disaster-prevention officer, the schoolteacher, the onsen operator, the farmer whose question lands on the `incomplete` livelihood layer. Expect the first round to find real bugs; that is what it is for. Record each fix in `DECISIONS.md`.
+2. **Resolve the `map_caveat` / `vlcd_tokachi` inconsistency** with `kitavolca` (see above).
+3. **Gather the remaining livelihood facts** so that layer can stop being `status: incomplete` — needs a real primary source for present-day land use over the deposit area (国土数値情報 land-use data is the obvious candidate; GSI's own 土地条件図 classification is another).
+4. **Decide how Rule 3 works in an air-gapped deployment.** `STAFF-PROMPT.md`'s live status check assumes web access. A `dwg7/kaga0` packaging has none, and shipping a hazard Staff that structurally cannot know the current alert level needs a deliberate answer, not a default.
+5. Only after (1) actually shows layer-recognition working on real questions: raise generalising it with `dwg7/staccato-ecosystem` — they have asked to be told when it is ready and have explicitly agreed not to push.
+
+## Older notes follow (2026-09-05 → 09-08)
+
+
 ## What's true as of 2026-09-05
 
 - **Repo just founded**, scaffolded by a Claude Code session working in `dwg7/staccato-ecosystem` at hfu's request. Nothing beyond `README.md`, `CLAUDE.md`, `HANDOVER.md` (this file), `DECISIONS.md`, `LICENSE` exists yet. No dossier written, no Staff prompt, no Cartographer code.
@@ -48,15 +71,6 @@ Gathered 2026-09-05 from GSI's official 1:50,000 火山土地条件図「十勝�
 **The livelihood/place-identity layer** (why 十勝岳大正泥流 is a good first case for testing layer-selection, per hfu and the design proposal): the same deposit area that the 1926 lahar covered is, today, farmland in the Kamifurano/Furano area — disaster and livelihood are literally the same physical land, at different points in its history. This is the concrete instance of "layered significance on the same coordinates" the whole `kataribe` concept is built around — see `CLAUDE.md`.
 
 **Not yet gathered**: specific present-day agricultural/tourism facts about the Kamifurano area (crop types, any commemorative sites, whether there's an existing local memorial or annual observance — 2026 being the 100th anniversary makes this worth checking), and confirmation of exactly which kitavolca/stars.optgeo.org map link(s) best represent this specific event's extent (kitavolca's `vlcm.pmtiles` covers 十勝岳 generally — a real link needs the right bbox/style parameters, not just "some Tokachi map").
-
-## Immediate next tasks
-
-1. ~~Resolve the `ferspas57` Cartographer dependency~~ — **done 2026-09-05**, see above (though which Cartographer to target — `ferspas57` vs `spiccato` — is still open).
-2. ~~Get the `getNarrativeFromUrl`/`setNarrativeInUrl`/`applyNarrativeStep` walkthrough~~ — **done 2026-09-05**, from both `ferspas57-2` and `faceless-cartographer-82`/spiccato, see above.
-3. **In progress**: draft the first dossier content in a Cartographer-agnostic shape (hfu approved starting here before the Cartographer choice is final, 2026-09-05) — one entry per layer (hazard/livelihood/place-identity), each carrying its own map state (center/zoom/required layer(s)), so it can be mechanically rendered as either an `ferspas57`-style narrative step or a `spiccato` `#q=` link once that choice is made.
-4. Gather the remaining livelihood/place-identity facts noted above (still not done).
-5. Settle the Cartographer choice (ferspas57 narrative vs spiccato single-state links) once both peer answers have been weighed against the drafted dossier's actual shape.
-6. Only after a first dossier is solid: write the Staff prompt (selection + register/language adaptation logic), informed by `ferspas57`'s `STAFF-PROMPT.md` Narrative Mode section and `dwg7/staccato-ecosystem`'s methodology.
 
 ## Design clarification from reading ADR 0010 directly (2026-09-08)
 

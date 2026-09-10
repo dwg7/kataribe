@@ -4,6 +4,35 @@ ADR-lite log for this project. English. Append new decisions at the top, oldest 
 
 ---
 
+### D5 — Staff prompt v0.1 drafted, with a new mandatory live-status rule for still-active hazards
+**Date**: 2026-09-11
+**What**: Wrote `STAFF-PROMPT.md` (Draft v0.1) — the last major unbuilt piece named in `HANDOVER.md`'s task list. It follows `staccato-spec`'s `staff-system-prompt.md` template and the "Staff's implementation IS this prompt text" model already running in `dwg7/ferspas57` and `dwg7/chukei`: a fenced system-prompt block to paste into a general-purpose chat agent, alongside `DOSSIER-FORMAT.md` and the dossier JSON.
+
+Structure: audience definition (local intermediaries, framed as an accountable chain rather than a disclaimer), a **Layer recognition** procedure that is the prompt's centre of gravity, then four numbered rules, a handoff protocol, a response format, three worked examples (including one for a `status: incomplete` layer and one for "no dossier exists"), and quality standards.
+
+The four rules:
+1. **Anti-Fabrication** — every claim traces to a `facts[]` entry and its `sources[]` id; never invent a `source_id` (spiccato fails silently on unknown ids — a blank map, no error); `status: incomplete` is not a gap to fill from general knowledge. Coordinates are the one deliberate exception (a wrong camera costs one pan).
+2. **Carry the caveat in your own words** — implements the ADR 0010 resolution recorded in `HANDOVER.md` (2026-09-08). spiccato has no caption feature and kataribe deliberately builds none, so a layer's `map_caveat` reaches the reader only if Staff says it. Never hand over a link with its caveat omitted.
+3. **Live status check for hazards that are still live** — NEW, see below.
+4. **Language and register** — answer in the asker's language throughout; adapt register, never the numbers/dates/place names/caveats. Never end on a bare negative (adopted from `ferspas57`'s D54, which added it after live testing).
+
+**Why Rule 3 exists**: `staccato-ecosystem-85` relayed (2026-09-11) that `hfu/volca` records 十勝岳 as being at 噴火警戒レベル2 since June 2026. Per `CLAUDE.md`'s peer-verification rule this was not adopted on the peer's say-so; it was checked directly against the primary source — 気象庁「十勝岳の火山活動解説資料（令和８年８月）」(`https://www.data.jma.go.jp/vois/data/report/monthly_v-act_doc/sapporo/26m08/108_26m08.pdf`) and JMA's own current-status page. Verified: 火口周辺警報（噴火警戒レベル２：火口周辺規制）issued 2026-06-18, unchanged since; ごく小規模な噴火 on 2026-07-22, 08-05 and 08-06; deep inflation since March 2026 and increased SO2 since April; warning radius ~1.5 km from 62-2火口.
+
+Two consequences, one of them sharper than the peer's own framing:
+
+- **A dossier that retells a 100-year-old disaster while the same volcano is under an active warning cannot be told as pure history.** A local intermediary reading a well-told 1926 account could reasonably infer the danger is past. Hence Rule 3: before handing over a `hazard` layer for a hazard whose generating process is still running, Staff must look up the current official status, state it with its date and source, and keep it *visibly separate* from dossier facts ("The dossier records…" vs. "As of my check today, JMA reports…"). Written generally — any live volcano, active fault, or river that still floods — not as a 十勝岳 special case, because kataribe is general-purpose.
+- **The historic crater and the currently-restive crater are not the same place.** The 2026 unrest is at 62-2火口/振子沢噴気孔群; the same JMA report notes 大正火口 — the 1926 crater this dossier is named for — has been running 噴気 of 200 m or less. Conflating them would be a specific, plausible, and materially misleading error, so Rule 3 names it explicitly.
+
+**What deliberately did NOT change**: none of this went into the dossier. Current alert level is exactly the kind of changeable present-day fact `DOSSIER-FORMAT.md` reserves for generation-time lookup, and `DECISIONS.md` D2's follow-up forbids freezing it into a versioned document. It is Staff behaviour, not dossier content. No schema flag was added to mark "this dossier needs a live check" either — Rule 3's general phrasing ("a hazard produced by a process that is still running") covers it without a `kataribe-dossier/v1` schema change.
+
+**Also verified while drafting** (independently, not assumed): `vlcd_tokachi` really is present in the live `https://hfu.github.io/layers-martin/catalog.json`, as `content_type: image/png` under path 「土地の成り立ち・土地利用 / 火山土地条件図 / 火山土地条件図　数値データ（火山地形分類）」. So the first dossier's `cartographer_links.spiccato` names a real id, corroborating the spiccato session's earlier VERIFIED marking from a second direction.
+
+**Open item raised by that check, deliberately not fixed here**: the hazard layer's `map_caveat` describes kitavolca's *vector* VLCM tiles (`stars.optgeo.org/vlcm`, source-layer `natural`), while the link actually hands over the *raster* `vlcd_tokachi` from `layers-martin`. The caveat's conclusion almost certainly still holds — both appear to render the same GSI 火山地形分類 digital data — but "almost certainly" is exactly what this repo's own rules say not to assert. Left as-is pending confirmation from `kitavolca`; see `HANDOVER.md`.
+
+**Status**: v0.1 is unvalidated. `ferspas57`'s prompt reached v0.6 through repeated live testing against real personas, and each round caught a real bug (their D54, D56, D58). kataribe's should expect the same. Not proposed to `staccato-ecosystem` as a methodology pattern — the layer-recognition procedure has now been *written down*, which is not the same as having been shown to work.
+
+---
+
 ### D2 — Dossier vs. narrative.json: split kataribe's unique work from the shared/co-developed artifact
 **Date**: 2026-09-05
 **What**: Settled the relationship between two things that were at risk of being conflated: the **dossier** (kataribe's own per-event document: verified facts, sources, per-layer audience/register notes, and honest caveats about what map data can and can't show — e.g. the kitavolca finding below) and **narrative.json** (the Cartographer-facing artifact: camera state + active layers + caption, per `dwg7/ferspas57`'s `NARRATIVE-FORMAT.md`).
