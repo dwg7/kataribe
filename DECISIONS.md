@@ -22,6 +22,8 @@ ADR-lite log for this project. English. Append new decisions at the top, oldest 
 
 **Status**: `livelihood` stays `partial`. Present-day land use over the affected lowland is still unsourced — 国土数値情報 土地利用細分メッシュ (L03-b) remains the candidate — and the limit set in D8 stands: 1926 was 水田 per JMA, so the claim is continuity of agricultural use, never of crop.
 
+**Addendum, 2026-09-12**: hfu asked directly for `CLAUDE.md` and `README.md` to be rewritten to this sharper premise, closing the "hfu's decision, not this session's" item this entry originally left open. Both now read "farmland → buried → farmland again" rather than "the deposit is today's farmland." `HANDOVER.md`'s older 2026-09-05 section is left with the original phrasing on purpose, as a record of what was believed before this D9 work — not corrected retroactively, the same discipline applied to the D7 "orphan entry" correction.
+
 ---
 
 ### D8 — Round-2 testing: the prompt demanded checks it gave Staff no way to perform, and Staff filled the gaps by inferring
